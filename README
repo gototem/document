@@ -1,0 +1,87 @@
+                            The Gototem Open Source Project Document
+
+1.Get projection:
+
+(1).Download and config repo:
+
+  a.Create a directory:
+    $ mkdir ~/bin
+  b.Config environment variable:
+    $ vim ~/.bashrc, add PATH=~/bin:$PATH to the end of ~/.bashrc
+  c.Download repo script, this maybe not up-to-date file, you can update to url:
+    $ curl "http://php.webtutor.pl/en/wp-content/uploads/2011/09/repo" > ~/bin/repo
+  d.Add executable authority:
+    $ chmod a+x ~/bin/repo
+
+(2).Sync our projection:
+
+  a.Create a directory:
+    $ mkdir ~/gototem
+  b.Repo init:
+    $ repo init -u https://github.com/gototem/manifest.git -b master
+  c.Repo sync:
+    $ repo sync -j4
+
+2.Config email:
+
+(1).Install mutt and msmtp
+
+    $ sudo apt-get install mutt
+    $ sudo apt-get install msmtp
+
+(2).Config mutt and msmtp as follows：
+
+    Firstly, config mutt in file "~/.muttc" for current user as follows:
+
+    set sendmail="/usr/bin/msmtp"
+    set use_from=yes
+    set realname="vgototem"
+    set from=vgototem@gmail.com
+    set envelope_from=yes
+
+    Secondly, config msmtp in file "~/.msmtprc" for current user as follows:
+
+    a.create files are "~/.msmtprc" and " ~/.msmtp.log" as configure and log:
+
+    account default
+    host smtp.corpease.net
+    from vgototem@gmail.com
+    auth plain
+    user vgototem@gmail.com
+    password xxxxxxx
+    logfile ~/.msmtp.log
+
+    b.modify to authority for "~/.msmtprc":
+
+    $ chmod 600 .msmtprc
+    $ touch ~/.msmtp.log
+
+    c.send test email:
+
+    $ msmtp --host=smtp.corpease.net --serverinfo
+    . send a peple:
+    $ echo "hello world" | mutt -s "title" username@gmail.com(can use qq mail).
+    . send soms peple, cc, attach files:
+    $ echo "hello" | mutt -s "title" vogototem@gmail.com,user2@gmail.com -c user3@gmail.com -a /tmp/ip.tmp
+
+(3).Send patch to us:
+
+  a.Modify to files.
+
+  b.git add file1, file2
+    Note: file1, file2 is yourself have modified
+
+  c.git commit -s
+    Input message as follows:
+      Line 1：Commit Message Sample
+      Line 2：
+      Line 3：N/A
+      Line 4：
+      Line 5：This is a sample of gototem commit message. Please follow this.
+      Line 6：Signed-off-by: liminghao <vgototem@gmail.com>
+
+  d.git format-patch gototem/seed -o out_patch/
+    Note: out_patch is the path of your patch
+
+  e.git send-email --to vgototem@gmail.com out_patch/patch
+    Note: patch is the file of your patch
